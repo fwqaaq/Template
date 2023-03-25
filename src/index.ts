@@ -4,7 +4,7 @@ import { blue, cyan, green, red, reset, yellow } from 'kolorist'
 import prompts from 'prompts'
 import path from 'path'
 import { spawn } from 'child_process'
-import { fileURLToPath, pathToFileURL } from 'url'
+import { fileURLToPath } from 'url'
 
 type Options = {
   name: string
@@ -95,7 +95,6 @@ async function init() {
           type: 'select',
           name: 'options',
           message: reset('Select a template:'),
-          initial: 0,
           choices: Object.values(OPTIONS).map((o) => ({
             title: o.color(o.display || o.name),
             value: o,
