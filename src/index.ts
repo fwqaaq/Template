@@ -3,7 +3,7 @@ import fs from 'fs'
 import { blue, cyan, green, red, reset, yellow } from 'kolorist'
 import prompts from 'prompts'
 import path from 'path'
-import { spawn } from 'child_process'
+import { spawnSync } from 'child_process'
 import { fileURLToPath } from 'url'
 
 type Options = {
@@ -177,8 +177,14 @@ async function init() {
   )
 
   try {
-    await runCommand(pkgManger as string, ['install'], root)
-    await runCommand(pkgManger as string, ['run', 'dev'], root)
+    spawnSync(pkgManger as string, ['install'], {
+      cwd: root,
+      stdio: 'inherit',
+    })
+    spawnSync(pkgManger as string, ['run', 'dev'], {
+      cwd: root,
+      stdio: 'inherit',
+    })
   } catch (e) {
     console.error(e)
   }
@@ -272,34 +278,6 @@ function copy(dir: string, dest: string) {
       fs.mkdirSync(target, { recursive: true })
       copy(source, target)
     }
-  })
-}
-
-async function runCommand(
-  command: string,
-  args: string[],
-  cwd: string
-): Promise<number> {
-  return new Promise((resolve, rejects) => {
-    const child = spawn(command, args, {
-      cwd: !process.platform.includes('win32')
-        ? cwd
-        : fileURLToPath(cwd).toString(),
-      stdio: 'inherit',
-    })
-    child.stdout?.on('data', (data) => {
-      console.log(data)
-    })
-    child.stderr?.on('data', (data) => {
-      console.log(data)
-    })
-    child.on('close', (code) => {
-      if (code === 0) {
-        resolve(code)
-      } else {
-        rejects(code)
-      }
-    })
   })
 }
 
