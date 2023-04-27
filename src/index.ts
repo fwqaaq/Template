@@ -158,15 +158,11 @@ async function init() {
 
   copy(templateDir, root)
 
-  // const { default: pkg } = (await import(
-  //   path.join(templateDir, 'package.json'),
-  //   {
-  //     assert: { type: 'json' },
-  //   }
-  // )) as { default: { [key: string]: any } }
-
-  const pkg = JSON.parse(
-    fs.readFileSync(path.join(templateDir, 'package.json')).toString()
+  const { default: pkg } = await import(
+    path.join(templateDir, 'package.json'),
+    {
+      assert: { type: 'json' },
+    }
   )
 
   pkg.name = packageName || getProjectName()
