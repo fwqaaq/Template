@@ -1,7 +1,12 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: '/template-*'
+    directory: '/template-vue'
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 20
+  - package-ecosystem: npm
+    directory: '/template-vue2'
     schedule:
       interval: daily
     open-pull-requests-limit: 20
