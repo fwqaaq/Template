@@ -27,3 +27,8 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+# Added by cargo
+
+/target
+/Cargo.lock
